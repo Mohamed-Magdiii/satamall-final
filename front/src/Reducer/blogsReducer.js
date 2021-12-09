@@ -1,9 +1,9 @@
-/** @format */
-
 import {
   GET_BLOGS,
   DELETE_BLOG,
   ADD_BLOG,
+  UPDATE_BLOG,
+  GET_BLOG
 } from "../../src/app/actions/blogs/types";
 const initState = {
   blogs: [],
@@ -31,6 +31,12 @@ export default function(state = initState, action) {
         ...state,
         blogs: [...state.blogs, payload],
       };
+      case UPDATE_BLOG:
+        case GET_BLOG:
+        return {
+          ...state,
+          blog:payload
+        }
     default:
       return state;
   }

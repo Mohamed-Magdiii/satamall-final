@@ -90,7 +90,6 @@ router.get("/:id", verifyTokenAndAdmin, async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
-
 //@route    Delet api/blog/:id
 //@desc     Delete blog by id
 //@acess    Private
@@ -114,4 +113,23 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+//@route    PUT api/blogs/:blog_id
+//@desc     update blog by id
+//@acess    Private
+router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
+  try {
+    const blog = await Blog.findByIdAndUpdate(req.params.id, 
+      {
+      $set:req.body
+    },
+    {new:true}
+    )
+    res.status(200).json(blog);
+  } catch (err) {
+    console.log(err.message);
+   
+    res.status(500).send("Server Error");
+  }
+});
+
 module.exports = router

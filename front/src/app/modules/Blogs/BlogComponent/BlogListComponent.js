@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import  {getAllBlogs, deleteBlog} from '../../../actions/blogs/blogs'
+import  {getAllBlogs, deleteBlog,updateBlog} from '../../../actions/blogs/blogs'
+import { Link } from 'react-router-dom'
 
 const BlogListComponent = ({getAllBlogs ,deleteBlog, blogs:{blogs, loading}}) => {
     useEffect(() => {
@@ -40,6 +41,7 @@ const BlogListComponent = ({getAllBlogs ,deleteBlog, blogs:{blogs, loading}}) =>
              
               <td className="border text-center">
                <span> <i key={blg._id} className="far fa-trash-alt ml-auto text-danger" onClick={e => deleteBlog(blg._id)}/></span>
+               <span><Link to={`/blogs-page/edit/${blg._id}`}><i key={blg._id} className="fas fa-edit ml-auto text-primary"/></Link></span>
               </td>
             </tr>
           )
@@ -52,8 +54,9 @@ const BlogListComponent = ({getAllBlogs ,deleteBlog, blogs:{blogs, loading}}) =>
 
 BlogListComponent.propTypes = {
 getAllBlogs:PropTypes.func.isRequired,
+updateBlog:PropTypes.func.isRequired,
 }
 const mapStateToProps = state=>({
     blogs:state.blogs
 })
-export default connect(mapStateToProps, {getAllBlogs,deleteBlog})(BlogListComponent)
+export default connect(mapStateToProps, {getAllBlogs,deleteBlog, updateBlog})(BlogListComponent)

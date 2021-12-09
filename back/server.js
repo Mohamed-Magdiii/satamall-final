@@ -28,6 +28,7 @@ app.use('/api/blogs' , require('./routes/api/blog'))
 app.use('/api/orders', require('./routes/api/orders'));
 app.use('/api/order-item', require('./routes/api/orderItem'));
 app.use('/api/offers', require('./routes/api/offers'));
+app.use('/api/rates', require('./routes/api/rates'));
 
 //App listen on Port 4000
 const PORT = process.env.PORT || 4000

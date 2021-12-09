@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { getProductByID ,getCategory, updateProduct } from "../../../actions/products";
 import { Input, Select } from "../../../../_metronic/_partials/controls"; //_metronic/_partials/controls
 import { Field, Formik } from "formik";
-
 import axios from "axios";
 const ProductEditForm = ({ match,updateProduct,history, getProductByID,getCategory, products:{ product ,categories}}) => {
   const [image, setImage] = useState("");
