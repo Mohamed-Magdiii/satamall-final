@@ -8,7 +8,9 @@ import {
   CATEGORIES_ERROR,
   ADD_PRODUCTS,
   UPDATE_PRODUCTS,
-  GET_PRODUCT
+  GET_PRODUCT,
+  GET_RATES,
+  SEARCH_PRODUCT
 } from "./types";
 
 export const getProducts = () => async (dispatch) => {
@@ -128,3 +130,30 @@ export const updateProduct = (formData,id) => async (dispatch) => {
     });
   }
 };
+
+
+//Get Rates
+export const getRates = ()=> async dispatch =>{
+  try {
+    const res = await Axios.get(`${process.env.REACT_APP_API_URL}/api/rates`, {headers:{'x-auth-token':localStorage.getItem('authToken')}})
+    dispatch({
+      type:GET_RATES,
+      payload:res.data
+    })
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+//Get Products Using Query
+export const getProductsUsingQuery = (query)=> async dispatch =>{
+  try {
+    const res = await Axios.get(`${process.env.REACT_APP_API_URL}/api/products/findBy/:${query}`, {headers:{'x-auth-token':localStorage.getItem('authToken')}})
+    dispatch({
+      type:SEARCH_PRODUCT,
+      payload:res.data
+    })
+  } catch (error) {
+    console.log(error.message);
+  }
+}

@@ -7,8 +7,7 @@ import { Link } from 'react-router-dom'
 const BlogListComponent = ({getAllBlogs ,deleteBlog, blogs:{blogs, loading}}) => {
     useEffect(() => {
         getAllBlogs()
-     }, [])
-     console.log(blogs);
+     }, [getAllBlogs])
     return (
         <div>
         <table className="table table-hover align-middle gs-0 gy-4">
@@ -25,7 +24,7 @@ const BlogListComponent = ({getAllBlogs ,deleteBlog, blogs:{blogs, loading}}) =>
             <tr className="text-center border-3 m-auto" key={blg._id}>
              <td className="border text-center">
                 <div className="d-flex flex-column offset-4">
-                <img src={`http://localhost:4000/${blg.image}`} className="rounded-circle w-60px"/>
+                <img src={`http://localhost:4000/${blg.image}`} className="rounded-circle w-60px" alt=""/>
                 </div>
               </td>  
               <td className="border text-center">

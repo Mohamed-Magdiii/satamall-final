@@ -1,17 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {Link} from 'react-router-dom'
-import { getProducts , deleteProduct} from "../../../actions/products";
+import { getProducts , deleteProduct, getProductsUsingQuery} from "../../../actions/products";
 import PropTypes from 'prop-types'
 import { VscChromeClose } from "react-icons/vsc";
 import { FcOk } from "react-icons/fc";
-const ProductsPage = ({getProducts,deleteProduct, products:{products}}) => {
+import ProductsSearch from "./ProductsSearch";
+const ProductsPage = ({getProducts,deleteProduct,getProductsUsingQuery ,products:{products ,productQuery}}) => {
+  const [query ,setQuery]= useState("")
 useEffect(()=>{
       getProducts()
+      getProductsUsingQuery(query)
+
   },[getProducts])
-  
+  const onClick = ()=>{
+    setTimeout(()=>{
+      console.log(productQuery);
+    },400)
+  }
   return (
   <> 
+  <ProductsSearch onClick={onClick} onChange = {e =>setQuery(e.target.value)}/>
    <div className="card-body py-10 px-2">
   <div className="table">
     <table className="table table-hover align-middle gs-0 gy-4">
@@ -33,7 +42,6 @@ useEffect(()=>{
          {products && products.map((product ) => (
             <tr className="text-center border-3 m-auto" key={product._id}>
               <td className="border text-center">
-              {/* <img src={`http://localhost:4000/${product.image}`} className="rounded-circle w-30px"/> */}
                  <span>{product.title_en}</span>
               </td>
               <td className="border text-center">
@@ -41,7 +49,7 @@ useEffect(()=>{
               </td>
               <td className="border text-center">
                 <div className="d-flex flex-column">
-                  {product.categoryTitle}
+                  {product.categoryId.title}
                 </div>
               </td>
               <td className="border text-center">
@@ -87,10 +95,11 @@ useEffect(()=>{
 ProductsPage.propTypes = {
     getProducts:PropTypes.func.isRequired,
     deleteProduct:PropTypes.func.isRequired,
+    getProductsUsingQuery:PropTypes.func.isRequired,
     products : PropTypes.object.isRequired,
 }
     
 const mapStateToProps = state => ({
     products : state.products
 })
-export default connect(mapStateToProps , {getProducts,deleteProduct })(ProductsPage)
+export default connect(mapStateToProps , {getProducts,deleteProduct,getProductsUsingQuery })(ProductsPage)

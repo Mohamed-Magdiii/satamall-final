@@ -5,7 +5,7 @@ import { getProductByID ,getCategory, updateProduct } from "../../../actions/pro
 import { Input, Select } from "../../../../_metronic/_partials/controls"; //_metronic/_partials/controls
 import { Field, Formik } from "formik";
 import axios from "axios";
-const ProductEditForm = ({ match,updateProduct,history, getProductByID,getCategory, products:{ product ,categories}}) => {
+const ProductEditForm = ({ match,updateProduct,history,getCategory, products:{ product ,categories}}) => {
   const [image, setImage] = useState("");
   const [color, setColor] = useState([]);
   const [title_en, setTitle_en] = useState("")
@@ -37,6 +37,7 @@ useEffect(() =>
         setStatus(response.data.status)
       }).catch((error) => console.log(error.response))
       getCategory()
+      // eslint-disable-next-line
 } , []);
 
 
@@ -44,7 +45,6 @@ const [displaySocialInputs, toggleSocialInputs] = useState(false);
 const onSubmit =(e)=>{
 e.preventDefault()
 updateProduct({title_en, categoryId,price,description,size,color,sale,store,image,status}, match.params.id)
-
 setTimeout(()=>{
   history.push('/products-page')
 },500)

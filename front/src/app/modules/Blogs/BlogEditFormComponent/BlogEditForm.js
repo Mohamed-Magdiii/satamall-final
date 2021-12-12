@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Input, Select } from "../../../../_metronic/_partials/controls";
+import { Input } from "../../../../_metronic/_partials/controls";
 import { Field, Formik } from "formik";
 import { connect } from "react-redux";
 import { updateBlog, getBlogByID } from "../../../actions/blogs/blogs";
-import { Link } from "react-router-dom";
 import axios from "axios";
 
 const BlogEditForm = ({ updateBlog,history, match,getBlogByID,blogs:{blog}}) => {
@@ -20,6 +19,7 @@ const BlogEditForm = ({ updateBlog,history, match,getBlogByID,blogs:{blog}}) => 
       setDescription(response.data.description)
       setImage(response.data.image)
     }).catch((error) => console.log(error.response))
+    // eslint-disable-next-line
 },[])
 const onSubmit = (e)=>{
   e.preventDefault()

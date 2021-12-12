@@ -8,6 +8,8 @@ import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { I18nProvider } from "../_metronic/i18n";
 import { LayoutSplashScreen, MaterialThemeProvider } from "../_metronic/layout";
+import 'react-rater/lib/react-rater.css'
+
 export default function App({ store, persistor, basename }) {
   const queryClient = new QueryClient();
   return (

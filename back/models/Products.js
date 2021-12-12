@@ -5,6 +5,10 @@ const ProductShema = mongoose.Schema(
       type: String,
       ref: "User",
     },
+    image:{
+      type:String,
+      default:""
+    },
     title_en: {
       type: String,
       required: true,
@@ -16,11 +20,8 @@ const ProductShema = mongoose.Schema(
       type: String,
     },
     categoryId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
-    },
-    categoryTitle: {
-      type: String,
     },
     description: {
       type: String,

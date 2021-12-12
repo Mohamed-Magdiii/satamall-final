@@ -333,6 +333,19 @@ export function AsideMenuList({ layoutProps }) {
                   <span className="menu-text">Add</span>
                 </NavLink>
               </li>
+              <li
+                className={`menu-item ${getMenuItemActive(
+                  "/products"
+                )}`}
+                aria-haspopup="true"
+              >
+                <NavLink className="menu-link" to="/products-page/rates">
+                  <i className="menu-bullet menu-bullet-dot">
+                    <span />
+                  </i>
+                  <span className="menu-text">Rates</span>
+                </NavLink>
+              </li>
             </ul>
           </div>
         </li>

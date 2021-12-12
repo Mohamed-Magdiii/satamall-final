@@ -6,7 +6,7 @@ import { Input, Select } from "../../../../_metronic/_partials/controls"; //_met
 import { Field, Formik } from "formik";
 import { useEffect } from "react";
 
-const ProductForm = ({ addProduct, getCategory, products: { categories } }) => {
+const ProductForm = ({history, addProduct, getCategory, products: { categories } }) => {
   useEffect(() => {
     getCategory();
   }, [getCategory]);
@@ -45,9 +45,8 @@ const onSubmit = (e) => {
     setSize("");
     setStore("");
     setStatus("");
-  };
-  console.log(status);
-  console.log(price);
+    
+   };
   return (
     <div>
       <Formik>
@@ -65,6 +64,7 @@ const onSubmit = (e) => {
                 label="Title"
                 onChange={(e) => setTitle_en(e.target.value)}
                 value={title_en}
+                className="form-control"
               />
             </div>
           </div>
@@ -74,10 +74,13 @@ const onSubmit = (e) => {
                 name="categoryId"
                 label="Category"
                 value={categoryId}
+                className="form-control"
                 onChange={(e) => {
                   setCategoryId(e.target.value);
                 }}
-              > {categories.map((category) => (
+              >
+                {" "}
+                {categories.map((category) => (
                   <option key={category._id} value={category._id}>
                     {category.title}
                   </option>
@@ -94,21 +97,25 @@ const onSubmit = (e) => {
               <div className="btn btn-bg-dark">
                 <input
                   type="file"
+                  className="form-control"
                   onChange={(e) => setImage(e.target.files[0])}
                   name="image"
                 />
               </div>
-              </div>
-              <div className="col-lg-4">
-                  <Select
-                    name="status"
-                    label="status"
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
-                  > <option value="false">false</option>
-                    <option value="true">true</option>
-                  </Select>
-                </div>
+            </div>
+            <div className="col-lg-4">
+              <Select
+                name="status"
+                label="status"
+                value={status}
+                className="form-control"
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                {" "}
+                <option value="false">false</option>
+                <option value="true">true</option>
+              </Select>
+            </div>
           </div>
           <div className="form-group row">
             <div className="col-lg-12">
@@ -117,6 +124,7 @@ const onSubmit = (e) => {
                 component={Input}
                 placeholder="Store"
                 label="store"
+                className="form-control"
                 type="number"
                 onChange={(e) => setStore(e.target.value)}
                 value={store}
@@ -130,6 +138,7 @@ const onSubmit = (e) => {
                 name="price"
                 component={Input}
                 value={price}
+                className="form-control"
                 placeholder="Price"
                 label="Price ($)"
                 onChange={(e) => setPrice(e.target.value)}
@@ -141,6 +150,7 @@ const onSubmit = (e) => {
               name="description"
               as="textarea"
               label="Description"
+              className="form-control"
               value={description}
               component={Input}
               onChange={(e) => setDescription(e.target.value)}
@@ -165,7 +175,8 @@ const onSubmit = (e) => {
                     label="Select Size"
                     value={size}
                     onChange={(e) => setSize(e.target.value)}
-                  ><option value="small">small</option>
+                  >
+                    <option value="small">small</option>
                     <option value="medium">medium</option>
                     <option value="large">large</option>
                     <option value="x-large">x-large</option>

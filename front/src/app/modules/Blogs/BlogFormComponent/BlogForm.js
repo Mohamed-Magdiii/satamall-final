@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Input, Select } from "../../../../_metronic/_partials/controls";
+import { Input } from "../../../../_metronic/_partials/controls";
 import { Field, Formik } from "formik";
 import { connect } from "react-redux";
 import { addBlog } from "../../../actions/blogs/blogs";
