@@ -32,10 +32,10 @@ const ProductShema = mongoose.Schema(
       required: true,
     },
     color: {
-      type:String
+      type:[String]
     },
     size: {
-      type: Array,
+      type: [String],
     },
     store: {
       type: Number,
@@ -51,6 +51,9 @@ const ProductShema = mongoose.Schema(
     status:{
       type:Boolean,
       default:false
+    },
+    stars:{
+      type:String
     }
   },
   { timestamps: true }

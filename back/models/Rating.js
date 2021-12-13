@@ -11,6 +11,9 @@ const RatingSchema = mongoose.Schema({
   product:{
       type:mongoose.Schema.Types.ObjectId,
       ref:'Products'    
+  },
+  productTitle:{
+      type:String
   }
 },
 {timestamps:true}

@@ -4,50 +4,63 @@ const { check, validationResult } = require("express-validator");
 const { verifyTokenAndAdmin, verifytoken } = require("../../middleware/auth");
 const User = require("../../models/Users");
 const Products = require("../../models/Products");
-const multer =require('multer')
+const multer = require("multer");
 
 const storage = multer.diskStorage({
-  destination:(req,file,callback)=>{
-    callback(null, './public/uploads')
+  destination: (req, file, callback) => {
+    callback(null, "./public/uploads");
   },
-  filename:(req,file,callback)=>{
-    callback(null,file.originalname)
-  }
-})
-const uploads = multer({storage:storage})
+  filename: (req, file, callback) => {
+    callback(null, file.originalname);
+  },
+});
+const uploads = multer({ storage: storage });
 
 //Router api/Products
 router.post(
   "/",
-  [verifyTokenAndAdmin,
-   uploads.single("image")
-  ],
+  [verifyTokenAndAdmin, uploads.single("image")],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-     return res.status(500).json({ errors: errors.array() });
+      return res.status(500).json({ errors: errors.array() });
     }
-const { title_en, description, price, color,store,size, sale,onsale ,categoryId,status } = req.body;
+    const {
+      title_en,
+      description,
+      price,
+      store,
+      sale,
+      size,
+      onsale,
+      categoryId,
+      status,
+    } = req.body;
     try {
       const user = await User.findById(req.user._id);
-      const cat = await Category.findById(categoryId)
-     const product = new Products({
+      const cat = await Category.findById(categoryId);
+ var color = req.body.color
+        .toString()
+        .split(",")
+        .map((col) => col.trim());
+      const product = new Products({
         title_en,
         description,
         price,
-        color,
         size,
+        color,
         store,
         sale,
         onsale,
         status,
         categoryId,
-        image:req.file.path,
+        image: req.file.path,
         user: user._id,
         name: user.username,
       });
- await product.save();
-    res.status(200).json(product)
+
+       await product.save();
+      res.status(200).json(product);
     } catch (error) {
       console.log(error);
       res.status(500).send("Server Error");
@@ -56,7 +69,7 @@ const { title_en, description, price, color,store,size, sale,onsale ,categoryId,
 );
 //Router Put api/categories/id
 //Edit Category title
-router.put("/:id", verifyTokenAndAdmin  , async (req, res) => {
+router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
     const updateProduct = await Products.findByIdAndUpdate(
       req.params.id,
@@ -81,7 +94,7 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 });
 
 //GET Product By ID
-router.get("/:id", verifytoken,async (req, res) => {
+router.get("/:id", verifytoken, async (req, res) => {
   try {
     const product = await Products.findById(req.params.id);
     res.json(product);
@@ -94,21 +107,23 @@ router.get("/:id", verifytoken,async (req, res) => {
 //GET AL Products
 router.get("/", async (req, res) => {
   try {
-    const product = await Products.find().populate('categoryId', ['title']);
+    const product = await Products.find().populate("categoryId", ["title"]);
     res.json(product);
   } catch (error) {
     console.log(error);
     res.status(500).send("Server Error");
   }
 });
-router.get("/findBy/:name", verifytoken,async (req, res) => {
+router.get("/findBy/:name", verifytoken, async (req, res) => {
   try {
-    const product = await Products.find({ $or:[{ title_en: req.params.name}]})
-      res.status(200).json(product)
+    const product = await Products.find({
+      $or: [{ title_en: req.params.name }],
+    });
+    res.status(200).json(product);
   } catch (error) {
     console.log(error);
     res.status(500).send("Server Error");
-  }    
+  }
 });
 
 module.exports = router;

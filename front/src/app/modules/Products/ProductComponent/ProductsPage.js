@@ -6,12 +6,13 @@ import PropTypes from 'prop-types'
 import { VscChromeClose } from "react-icons/vsc";
 import { FcOk } from "react-icons/fc";
 import ProductsSearch from "./ProductsSearch";
+import Rater from 'react-rater'
 const ProductsPage = ({getProducts,deleteProduct,getProductsUsingQuery ,products:{products ,productQuery}}) => {
   const [query ,setQuery]= useState("")
 useEffect(()=>{
       getProducts()
       getProductsUsingQuery(query)
-
+// eslint-disable-next-line
   },[getProducts])
   const onClick = ()=>{
     setTimeout(()=>{
@@ -29,6 +30,7 @@ useEffect(()=>{
           <th className="ps-4 min-w-100px">title</th>
           <th className="ps-4 min-w-100px">image</th>
           <th className="min-w-100px">Category</th>
+          <th className="min-w-100px">Rates</th>
           <th className="min-w-100px">Description</th>
           <th className="min-w-100px">price</th>
           <th className="min-w-100px">Size</th>
@@ -52,6 +54,11 @@ useEffect(()=>{
                   {product.categoryId.title}
                 </div>
               </td>
+              <td className="border text-center">
+                   <div className="d-flex flex-column">
+                   <Rater color="#FEd847"  total={5}  rating={product.stars} interactive={false}/>
+                   </div>
+                 </td>
               <td className="border text-center">
                 <div className="d-flex flex-column">
                   {product.description}
