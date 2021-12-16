@@ -1,11 +1,12 @@
-import { DELETE_PRODUCTS, GET_PRODUCTS,SEARCH_PRODUCT, PRODUCTS_ERROR,ADD_PRODUCTS,UPDATE_PRODUCTS,GET_PRODUCT,GET_RATES, GET_CATEGORIES } from "../app/actions/types";
+import { DELETE_PRODUCTS,SEARCH_RATE, GET_PRODUCTS,SEARCH_PRODUCT, PRODUCTS_ERROR,ADD_PRODUCTS,UPDATE_PRODUCTS,GET_PRODUCT,GET_RATES, GET_CATEGORIES } from "../app/actions/types";
 
 const initState ={
     products:[],
     product:null,
     categories:[],
     rates:[],
-    productQuery : null
+    productQuery : null,
+    rateQuery:[]
 }
 
 export default function(state= initState , action){
@@ -50,6 +51,11 @@ export default function(state= initState , action){
                       ...state,
                       productQuery:payload
                   }
+                  case SEARCH_RATE:
+                      return{
+                          ...state,
+                        rateQuery:payload
+                      }
         default:
             return state
     }

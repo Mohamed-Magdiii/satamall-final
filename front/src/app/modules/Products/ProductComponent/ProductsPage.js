@@ -19,6 +19,7 @@ useEffect(()=>{
       console.log(productQuery);
     },400)
   }
+  console.log(products);
   return (
   <> 
   <ProductsSearch onClick={onClick} onChange = {e =>setQuery(e.target.value)}/>
@@ -51,7 +52,7 @@ useEffect(()=>{
               </td>
               <td className="border text-center">
                 <div className="d-flex flex-column">
-                  {product.categoryId.title}
+                  {product.categoryId.title === null ? "-" : product.categoryId.title } 
                 </div>
               </td>
               <td className="border text-center">

@@ -53,7 +53,7 @@ const ProductShema = mongoose.Schema(
       default:false
     },
     stars:{
-      type:String
+      type:Number
     }
   },
   { timestamps: true }

@@ -10,7 +10,8 @@ import {
   UPDATE_PRODUCTS,
   GET_PRODUCT,
   GET_RATES,
-  SEARCH_PRODUCT
+  SEARCH_PRODUCT,
+  SEARCH_RATE
 } from "./types";
 
 export const getProducts = () => async (dispatch) => {
@@ -22,7 +23,6 @@ export const getProducts = () => async (dispatch) => {
       type: GET_PRODUCTS,
       payload: res.data,
     });
-
   } catch (error) {
     dispatch({
       type: PRODUCTS_ERROR,
@@ -54,13 +54,14 @@ export const deleteProduct = (id) => async (dispatch) => {
 export const addProduct = (formData) => async (dispatch) => {
   try {
     const res = await Axios.post(
-      `${process.env.REACT_APP_API_URL}/api/products`,formData,
+      `${process.env.REACT_APP_API_URL}/api/products`,
+      formData,
       {
         headers: {
           "x-auth-token": localStorage.getItem("authToken"),
         },
       }
-    );  
+    );
     dispatch({
       type: ADD_PRODUCTS,
       payload: res.data,
@@ -91,35 +92,35 @@ export const getCategory = () => async (dispatch) => {
 };
 //Get product By Id
 export const getProductByID = (id) => async (dispatch) => {
-    try {
-     const res = await Axios.get(
-        `${process.env.REACT_APP_API_URL}/api/products/${id}`,
-        { headers: { "x-auth-token": localStorage.getItem("authToken") } }
-      );
-      dispatch({
-        type: GET_PRODUCT,
-        payload: res.data,
-      });
-    } catch (error) {
-      dispatch({
-        type: PRODUCTS_ERROR,
-      });
-    }
-  
+  try {
+    const res = await Axios.get(
+      `${process.env.REACT_APP_API_URL}/api/products/${id}`,
+      { headers: { "x-auth-token": localStorage.getItem("authToken") } }
+    );
+    dispatch({
+      type: GET_PRODUCT,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCTS_ERROR,
+    });
+  }
 };
 
 //update Product
-export const updateProduct = (formData,id) => async (dispatch) => {
+export const updateProduct = (formData, id) => async (dispatch) => {
   try {
     const res = await Axios.put(
-      `${process.env.REACT_APP_API_URL}/api/products/${id}`,formData,
+      `${process.env.REACT_APP_API_URL}/api/products/${id}`,
+      formData,
       {
         headers: {
           "x-auth-token": localStorage.getItem("authToken"),
         },
       }
-    ); 
-    console.log(res.data); 
+    );
+    console.log(res.data);
     dispatch({
       type: UPDATE_PRODUCTS,
       payload: res.data,
@@ -131,29 +132,61 @@ export const updateProduct = (formData,id) => async (dispatch) => {
   }
 };
 
-
 //Get Rates
-export const getRates = ()=> async dispatch =>{
+export const getRates = () => async (dispatch) => {
   try {
-    const res = await Axios.get(`${process.env.REACT_APP_API_URL}/api/rates`, {headers:{'x-auth-token':localStorage.getItem('authToken')}})
+    const res = await Axios.get(`${process.env.REACT_APP_API_URL}/api/rates`, {
+      headers: { "x-auth-token": localStorage.getItem("authToken") },
+    });
     dispatch({
-      type:GET_RATES,
-      payload:res.data
-    })
+      type: GET_RATES,
+      payload: res.data,
+    });
   } catch (error) {
     console.log(error.message);
   }
-}
-
+};
 //Get Products Using Query
-export const getProductsUsingQuery = (query)=> async dispatch =>{
+export const getProductsUsingQuery = (query) => async (dispatch) => {
   try {
-    const res = await Axios.get(`${process.env.REACT_APP_API_URL}/api/products/findBy/:${query}`, {headers:{'x-auth-token':localStorage.getItem('authToken')}})
+    const res = await Axios.get(
+      `${process.env.REACT_APP_API_URL}/api/products/findBy/:${query}`,
+      { headers: { "x-auth-token": localStorage.getItem("authToken") } }
+    );
     dispatch({
-      type:SEARCH_PRODUCT,
-      payload:res.data
-    })
+      type: SEARCH_PRODUCT,
+      payload: res.data,
+    });
   } catch (error) {
     console.log(error.message);
   }
-}
+};
+//Update isApproved in Rates
+
+export const updateApproval = (isApproved, id) => async (dispatch) => {
+  try {
+    await Axios.put(
+      `${process.env.REACT_APP_API_URL}/api/rates/${id}`,
+      {isApproved},
+      { headers: { "x-auth-token": localStorage.getItem("authToken") } }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//Get Rate Using Query
+export const getRatesUsingQuery = (query) => async (dispatch) => {
+  try {
+    const res = await Axios.get(
+      `${process.env.REACT_APP_API_URL}/api/rates/filterBy/${query}`,
+      { headers: { "x-auth-token": localStorage.getItem("authToken") } }
+    );
+    dispatch({
+      type: SEARCH_RATE,
+      payload: res.data,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};

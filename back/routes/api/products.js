@@ -39,7 +39,7 @@ router.post(
     try {
       const user = await User.findById(req.user._id);
       const cat = await Category.findById(categoryId);
- var color = req.body.color
+      var color = req.body.color
         .toString()
         .split(",")
         .map((col) => col.trim());
@@ -59,7 +59,7 @@ router.post(
         name: user.username,
       });
 
-       await product.save();
+      await product.save();
       res.status(200).json(product);
     } catch (error) {
       console.log(error);
@@ -114,6 +114,8 @@ router.get("/", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+//Search By Product Name
 router.get("/findBy/:name", verifytoken, async (req, res) => {
   try {
     const product = await Products.find({
@@ -125,5 +127,6 @@ router.get("/findBy/:name", verifytoken, async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
 
 module.exports = router;

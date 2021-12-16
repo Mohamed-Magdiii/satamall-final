@@ -1,62 +1,66 @@
-const router = require("express").Router()
-const {  verifyTokenAndAdmin } = require('../../middleware/auth')
-const Blog = require('../../models/Blog')
-const {check , validationResult}= require('express-validator')
-const User = require('../../models/Users')
-const multer =require('multer')
+const router = require("express").Router();
+const { verifyTokenAndAdmin } = require("../../middleware/auth");
+const Blog = require("../../models/Blog");
+const { check, validationResult } = require("express-validator");
+const User = require("../../models/Users");
+const multer = require("multer");
 
 const storage = multer.diskStorage({
-  destination:(req,file,callback)=>{
-    callback(null, './public/blogs')
+  destination: (req, file, callback) => {
+    callback(null, "./public/blogs");
   },
-  filename:(req,file,callback)=>{
-    callback(null,file.originalname)
-  }
-})
+  filename: (req, file, callback) => {
+    callback(null, file.originalname);
+  },
+});
 const uploads = multer({
-  storage:storage,
+  storage: storage,
   // fileFilter:(req,file, callback)=>{
   //   checkFileType(file,callback)
   // }
-})
+});
 
 //Check File Type
-const checkFileType = (file, callback)=>{
+const checkFileType = (file, callback) => {
   //allowed ext
-  const fileTypes= /jpeg|jpg|png|gif/;
-  //check ext 
-const extname = fileTypes.test(file.originalname.toLowerCase())
-//check mime 
-const mimetype = fileTypes.test(file.mimetype)
-}
+  const fileTypes = /jpeg|jpg|png|gif/;
+  //check ext
+  const extname = fileTypes.test(file.originalname.toLowerCase());
+  //check mime
+  const mimetype = fileTypes.test(file.mimetype);
+};
 
 //@route    POST api/blog
 //@desc     Add blog
 //@acess    Private
-router.post('/' ,
- [  verifyTokenAndAdmin,
-  uploads.single('image') ,
-    [check('title', 'This Field Required').not().isEmpty()] 
-] ,async (req,res)=>{
+router.post(
+  "/",
+  [
+    verifyTokenAndAdmin,
+    uploads.single("image"),
+    [check("title", "This Field Required").not().isEmpty()],
+  ],
+  async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(500).json({ errors: errors.array() });
     }
     try {
-      const user = await User.findById(req.user._id)
+      const user = await User.findById(req.user._id);
       const blog = new Blog({
-          title:req.body.title,
-          description:req.body.description,
-          user:user._id,
-          image:req.file.path
-      })
-      await blog.save()
-      res.status(200).json(blog)
+        title: req.body.title,
+        description: req.body.description,
+        user: user._id,
+        image: req.file.path,
+      });
+      await blog.save();
+      res.status(200).json(blog);
     } catch (error) {
       console.log(error);
-     res.status(500).send("Server Error")
- }
-})
+      res.status(500).send("Server Error");
+    }
+  }
+);
 
 //@route    GET api/blogs
 //@desc     get all blogs
@@ -64,7 +68,9 @@ router.post('/' ,
 
 router.get("/", async (req, res) => {
   try {
-    const blog = await Blog.find().populate('user' , ['fullname' , 'email']).sort({ date: -1 });
+    const blog = await Blog.find()
+      .populate("user", ["fullname", "email"])
+      .sort({ date: -1 });
     res.status(200).json(blog);
   } catch (err) {
     console.log(err.message);
@@ -77,7 +83,10 @@ router.get("/", async (req, res) => {
 //@acess    Private
 router.get("/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
-    const blog = await Blog.findById(req.params.id).populate('user',['fullname', 'email']);
+    const blog = await Blog.findById(req.params.id).populate("user", [
+      "fullname",
+      "email",
+    ]);
     if (!blog) {
       res.status(400).json({ msg: "This blog not found" });
     }
@@ -118,18 +127,19 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 //@acess    Private
 router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
-    const blog = await Blog.findByIdAndUpdate(req.params.id, 
+    const blog = await Blog.findByIdAndUpdate(
+      req.params.id,
       {
-      $set:req.body
-    },
-    {new:true}
-    )
+        $set: req.body,
+      },
+      { new: true }
+    );
     res.status(200).json(blog);
   } catch (err) {
     console.log(err.message);
-   
+
     res.status(500).send("Server Error");
   }
 });
 
-module.exports = router
+module.exports = router;

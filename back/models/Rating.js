@@ -8,11 +8,21 @@ const RatingSchema = mongoose.Schema({
       type:Number,
       default:0
   },
+  isApproved:{
+    type:Boolean,
+    default:false
+  },
   product:{
       type:mongoose.Schema.Types.ObjectId,
       ref:'Products'    
   },
   productTitle:{
+      type:String
+  },
+  comment:{
+      type:String
+  },
+  name:{
       type:String
   }
 },
